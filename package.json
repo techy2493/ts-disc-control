@@ -1,0 +1,33 @@
+{
+  "name": "ts-disc-control",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@keyv/sqlite": "^2.0.2",
+    "atob": "^2.1.2",
+    "btoa": "^1.2.1",
+    "config.json": "0.0.4",
+    "cookie-parser": "^1.4.5",
+    "discord.js": "^12.5.1",
+    "express": "^4.17.1",
+    "express-openid-connect": "^2.2.1",
+    "gamedig": "^2.0.23",
+    "keyv": "^4.0.3",
+    "lodash": "^4.17.20",
+    "mysql-connect": "^1.0.1",
+    "node-fetch": "^2.6.1",
+    "node-t": "^0.1.0",
+    "node-ts": "^5.1.1",
+    "openid-client": "^4.4.0",
+    "querystring": "^0.2.1",
+    "source-server-query": "^1.0.1",
+    "sqlite3": "^5.0.2",
+    "ts3-nodejs-library": "^3.2.0"
+  }
+}
