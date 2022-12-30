@@ -62,13 +62,14 @@ app.get('/redirect', catchAsync(async (req, res) => {
         body: body
       });
     const json = await response.json();
+    console.log(json)
     res.redirect(`/token?token=${json.access_token}`);
   }));
 
   app.get('/token', catchAsync(async (req, res)=> {
     if (!req.query.token) throw new Error('NoTokenProvided');
     const token = req.query.token;
-      const response = await fetch('http://discordapp.com/api/users/@me', 
+      const response = await fetch('https://discordapp.com/api/users/@me', 
       {
         method: "GET",
         headers: {
@@ -76,6 +77,7 @@ app.get('/redirect', catchAsync(async (req, res) => {
         }
       });
       const json = await response.json();
+      console.log(json)
       res.send(`Hello ${json.username} your Discord ID is ${json.id}, you Teamspeak ID is ${req.cookies.tsid}. <br /> If you have problems with synchronization send the line above to high command!`)
       if (req.cookies.tsid && json.id) {
         var tsid = atob(req.cookies.tsid);
