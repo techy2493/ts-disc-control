@@ -1,33 +1,49 @@
 const db = require('../../database')
-const unmention = require('../../helpers/unmention');
+const synchroniseUser = require('../synchronizeUser')
+const ts = require('../../teamspeak');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
-class TSIDCommand {
-
+class SyncCommand {
     constructor() {
-        this.command = '!sync'
-        this.permissions = []
+        this.data = new SlashCommandBuilder()
+            .setName("sync")
+            .setDescription("Forces the user to resynchronize.")
+            .addMentionableOption(option => 
+                option.setName("user")
+                .setDescription("The user to be synchronized")
+            )
     }
-    async execute(message, commandArgs) {
-        return new Promise(async (resolve, reject) => {
-            if (!commandArgs[1] || !commandArgs[1].startsWith('<@')) {
-                message.channel.send("Please mention (@) the role you would like to sync!")
-                return;
-            }
+
+    // TODO: Implement a rate limit
+    
+    async execute(interaction) {
+        let member;
+
+        if (interaction.options.getMentionable('user'))
+            if (interaction.member.permissions.has(PermissionsBitField.Flags.ManageRoles))
+                member = interaction.options.getMentionable('user');
+            else 
+                interaction.reply("Sorry you don't have have permission to sync another user's roles")
+        else 
+            member = interaction.member;
         
-            let synced = await db.getSynchronizedRoles();
-            if (synced === undefined) {
-                synced = []
-            }
-            synced.push(message.guild.roles.cache.get(unmention(commandArgs[1])).name);
-            await db.setSynchronizedRoles(synced);
-            
-            synced = await db.getSynchronizedRoles();
-            let syncedString = "Syncing: "
-            synced.forEach(r => syncedString = syncedString + r + ", ")
-            message.channel.send(syncedString)
-            resolve();
-        });
+        const tsid = await db.getTeamspeakIDByDiscordId(member.user.id)
+        
+        let client;
+        try {
+            console.log(tsid, tsid)
+            client = await ts.client.clientGetDbidFromUid(tsid)
+            console.log('thing', client)
+        } catch (ex) { console.log(ex) }
+        
+        if (client) {
+            await synchroniseUser(interaction.member, tsid)
+            interaction.reply(`Roles of ${member.user.username} synchronized!`)
+        } else {
+            interaction.reply("Sorry I can't find that ID in teamspeak, please make sure you have connected to the server before and that you have used the ID for the correct identity. If you need help contact a member of high command.")
+        }
+        
     }
 }
 
-module.exports = new TSIDCommand();
+module.exports = new SyncCommand();

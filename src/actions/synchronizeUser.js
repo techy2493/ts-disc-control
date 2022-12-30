@@ -10,6 +10,8 @@ async function getTeamspeakRoles(cldbID) {
  }
  
  async function getDiscordRoles(member) {
+    console.log(member)
+    console.log(member.roles)
      let roles = member.roles.cache;
      let roleNames = [];
      roles.forEach(r => roleNames.push(r.name))
@@ -18,7 +20,7 @@ async function getTeamspeakRoles(cldbID) {
 
  module.exports =  async function synchroniseUser(member, tsID, silent) {
     try {
-        tsID = await db.getTeamspeakIDByDiscordId(member.id)
+        tsID = await db.getTeamspeakIDByDiscordId(member.user.id)
         console.log(tsID)
         let cldbID = (await ts.client.clientGetDbidFromUid(tsID)).cldbid
         let discordRoles = await getDiscordRoles(member);

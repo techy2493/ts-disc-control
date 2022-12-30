@@ -8,7 +8,7 @@ const db = require('./database');
 const discord = require('./discord');
 const synchronizeUser = require('./actions/synchronizeUser');
 const config = require('./config')
-console.log(express)
+
 const app = express()
 const port = config.web.port
 app.use(cookieParser())
@@ -85,6 +85,10 @@ app.get('/redirect', catchAsync(async (req, res) => {
         console.log("Missing an ID, ", req.cookies.tsid, json.id)
       }
   }))
+
+  app.get('/registerCommands', catchAsync((async (req, res) => {
+    discord.regsiterCommands();
+  })));
 
 app.listen(port, () => {
     console.log(`OAuth Login listening at http://localhost:${port}`)

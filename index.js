@@ -5,7 +5,6 @@ const discord = require("./src/discord");
 const _ = require('lodash');
 const teamspeakClientConnected = require('./src/actions/teamspeakClientConnected');
 const synchroniseUser = require('./src/actions/synchronizeUser');
-const processDiscordMessage = require('./src/actions/processDiscordMessage')
 
 
 // Initialize Connections to Servers
@@ -22,9 +21,6 @@ async function initialize() {
 }
 
 function prepareDiscordListeners() {
-    discord.client.on('message', message => {
-        processDiscordMessage(message);
-    });
     
     discord.client.on('guildMemberUpdate', member => {
         synchroniseUser(member.guild.members.cache.get(member.id))

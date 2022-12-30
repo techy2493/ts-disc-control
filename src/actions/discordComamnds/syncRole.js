@@ -1,20 +1,19 @@
 const db = require('../../database')
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
-class UnSyncCommand {
-
+class SyncRoleCommand {
     constructor() {
         this.data = new SlashCommandBuilder()
-            .setName("unsync")
-            .setDescription("Removes a role to by synchronized.")
+            .setName("syncrole")
+            .setDescription("Configures a role to by synchronized.")
             .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
             .addMentionableOption(option => 
                 option.setName("role")
-                .setDescription("The role to be remvoed from synchronization")
+                .setDescription("The role to be synchronized")
                 .setRequired(true)
             )
+            
     }
-
     async execute(interaction) {
 
         const role = interaction.options.getMentionable('role');
@@ -26,7 +25,7 @@ class UnSyncCommand {
         }
         
         synced.push(role.name);
-        await db.removeSynchronizedRoles(role.name);
+        await db.addSynchronizedRoles(role.name);
         
         synced = await db.getSynchronizedRoles();
         console.log(synced)
@@ -40,4 +39,4 @@ class UnSyncCommand {
     }
 }
 
-module.exports = new UnSyncCommand();
+module.exports = new SyncRoleCommand();
