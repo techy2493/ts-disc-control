@@ -35,7 +35,6 @@ class Database {
     }
 
     async updateTeamspeakID(discordID, tsID){
-        //console.log('inserting ', discordID, tsID)
         return new Promise((resolve, reject) => {
             this.db.run(`INSERT INTO members (discordID, teamspeakID)
                        VALUES ('${discordID}','${tsID}')

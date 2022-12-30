@@ -10,35 +10,44 @@ async function getTeamspeakRoles(cldbID) {
  }
  
  async function getDiscordRoles(member) {
-    console.log(member)
-    console.log(member.roles)
      let roles = member.roles.cache;
      let roleNames = [];
      roles.forEach(r => roleNames.push(r.name))
      return roleNames;
  }
 
- module.exports =  async function synchroniseUser(member, tsID, silent) {
+ module.exports =  async function synchroniseUser(member, silent) {
     try {
         tsID = await db.getTeamspeakIDByDiscordId(member.user.id)
-        console.log(tsID)
         let cldbID = (await ts.client.clientGetDbidFromUid(tsID)).cldbid
         let discordRoles = await getDiscordRoles(member);
         let teamspeakRoles = await getTeamspeakRoles(cldbID);
         let syncedRoles = await db.getSynchronizedRoles();
 
+        console.log(teamspeakRoles, discordRoles, syncedRoles)
         missingRoles = _.intersection(syncedRoles, _.difference(discordRoles, teamspeakRoles));
         extraRoles = _.intersection(syncedRoles, _.difference(teamspeakRoles, discordRoles));
     
-        missingRoles.forEach(async r => {
-            let group = await ts.client.getServerGroupByName(r)
+        console.log(missingRoles, extraRoles)
+        
+        for (const role of missingRoles) {
+            console.log(role)
+            let group = await ts.client.getServerGroupByName(role)
+            if (!group) {
+                console.log('Group ', role, 'not found!');
+                continue;
+            }
+                
             await ts.client.serverGroupAddClient(cldbID, group)
-        })
+        }
     
-        extraRoles.forEach(async r => {
-            let group = await ts.client.getServerGroupByName(r)
+        for (let role of extraRoles) {
+            let group = await ts.client.getServerGroupByName(role)
+            if (!group)
+                return console.log('Group ', role, 'not found!');
             await ts.client.serverGroupDelClient(cldbID, group)
-        })
+        }
+
         var tsClient = await ts.client.getClientByUid(tsID);
         if (tsClient) {
             if (!silent) {
@@ -49,6 +58,6 @@ async function getTeamspeakRoles(cldbID) {
         }
         
     } catch (ex) {
-        console.log("Error synchronising user: " + member.usernamer, ex)
+        console.log("Error synchronising user: " + member.username, ex)
     }
 };

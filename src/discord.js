@@ -34,7 +34,6 @@ class Discord {
             });
             this.client.on(Events.InteractionCreate, async interaction => {
                 if (!interaction.isChatInputCommand()) return;
-                //console.log(interaction);
 
                 const command = interaction.client.commands.get(interaction.commandName);
                 try {
@@ -48,20 +47,15 @@ class Discord {
         })
     }
 
-    
-
     async regsiterCommands() {
         let jsonCommands = [];
-        console.log(commands)
         commands.forEach(x => jsonCommands.push(x.data.toJSON()));
         const rest = new REST({ version: '10' }).setToken(config.discord.token);
         const data = await rest.put(
 			Routes.applicationGuildCommands(config.discord.clientID, config.discord.guild),
 			{ body: jsonCommands },
 		);
-        console.log(data)
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-
     }
     
     

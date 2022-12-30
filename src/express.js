@@ -82,7 +82,19 @@ app.get('/redirect', catchAsync(async (req, res) => {
       if (req.cookies.tsid && json.id) {
         var tsid = atob(req.cookies.tsid);
         db.updateTeamspeakID(json.id, tsid)
-        synchronizeUser(discord.client.guilds.cache.get(config.discord.guild).members.cache.get(json.id), tsid)
+        let guild = discord.client.guilds.cache.get(config.discord.guild);
+        let member;
+        guild.members.fetch({ withPresences: true }).then(fetchedMembers => {
+          const totalOnline = fetchedMembers.filter(member => member.presence?.status === 'online');
+          member = fetchedMembers.get(json.id)
+          if (member)
+            synchronizeUser(discord.client.guilds.cache.get(config.discord.guild).members.cache.get(json.id), tsid)
+          else 
+            console.log("The user didn't exist>!?!?")
+          // Now you have a collection with all online member objects in the totalOnline variable
+          //console.log(`There are currently ${totalOnline.size} members online in this guild!`);
+        });
+        
       } else {
         console.log("Missing an ID, ", req.cookies.tsid, json.id)
       }

@@ -31,9 +31,7 @@ class SyncCommand {
         
         let client;
         try {
-            console.log(tsid, tsid)
             client = await ts.client.clientGetDbidFromUid(tsid)
-            console.log('thing', client)
         } catch (ex) { console.log(ex) }
         
         if (client) {

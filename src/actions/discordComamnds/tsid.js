@@ -25,7 +25,6 @@ class TSIDCommand {
     async execute(interaction) {
 
         const user = interaction.options.getMentionable('user');
-        console.log(user.user)
 
         const tsid = interaction.options.getString('tsid')
         // TOOD: FIX INVALID CLIENT ERROR
