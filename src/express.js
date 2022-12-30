@@ -1,5 +1,5 @@
 const express = require('express')
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const btoa = require('btoa');
 const atob = require('atob');
 const querystring = require('querystring');
@@ -8,7 +8,7 @@ const db = require('./database');
 const discord = require('./discord');
 const synchronizeUser = require('./actions/synchronizeUser');
 const config = require('./config')
-
+console.log(express)
 const app = express()
 const port = config.web.port
 app.use(cookieParser())
