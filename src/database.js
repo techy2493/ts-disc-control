@@ -7,6 +7,8 @@ class Database {
         this.db = new sqlite3.Database(config.database.sqlite.filename)
     }
 
+    
+    // TODO: Security, make BOTH discordId,  tsid column indipendently unique & handle the erros this casues
     async initializeDatabase() {
         return new Promise((resolve, reject) => {
             this.db.serialize(() => {
