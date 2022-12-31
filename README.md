@@ -58,3 +58,39 @@ This is entirely a work in progress and is subject to change
     - Optionally, add [user] param to force another user to be removed (if invoker has appropriate permissions)
 - /RegisterTeamspeakIdentity
     - Allow user to register their own TS id instead of logging in? (This may present a security issue??)
+
+
+# SETUP
+
+## CONFIG FILE
+
+The following file contents should be populated and correctly filled out for your server servers in config.json in the root of the application (next to index.js)
+
+```
+{
+    "database": {
+        "sqlite" : {
+            "filename": "database.sqlite"
+        }
+    },
+    "discord": {
+        "token": "",
+        "guild": "",
+        "clientID": "",
+        "clientSecret": "",
+        "oAuthRedirect": "/redirect"
+    },
+    "teamspeak": {
+        "host": "",
+        "queryport": 10011,
+        "virtualServerId": "",
+        "username": "",
+        "password": ""
+    },
+    "web": {
+        "port": 8090,
+        "baseUrl": ""
+    }
+}
+
+```
