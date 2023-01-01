@@ -6,6 +6,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 class TSIDCommand {
 
     constructor() {
+        this.public = true;
         this.data = new SlashCommandBuilder()
             .setName("tsid")
             .setDescription("Registers a users teamspeak ID manually.")

@@ -62,7 +62,6 @@ app.get('/redirect', catchAsync(async (req, res) => {
         body: body
       });
     const json = await response.json();
-    console.log(json)
     res.redirect(`/token?token=${json.access_token}`);
   }));
 
@@ -77,7 +76,6 @@ app.get('/redirect', catchAsync(async (req, res) => {
         }
       });
       const json = await response.json();
-      console.log(json)
       res.send(`Hello ${json.username} your Discord ID is ${json.id}, you Teamspeak ID is ${req.cookies.tsid}. <br /> If you have problems with synchronization send the line above to high command!`)
       if (req.cookies.tsid && json.id) {
         var tsid = atob(req.cookies.tsid);
@@ -88,11 +86,12 @@ app.get('/redirect', catchAsync(async (req, res) => {
           const totalOnline = fetchedMembers.filter(member => member.presence?.status === 'online');
           member = fetchedMembers.get(json.id)
           if (member)
+          {
             synchronizeUser(discord.client.guilds.cache.get(config.discord.guild).members.cache.get(json.id), tsid)
+          }
           else 
             console.log("The user didn't exist>!?!?")
           // Now you have a collection with all online member objects in the totalOnline variable
-          //console.log(`There are currently ${totalOnline.size} members online in this guild!`);
         });
         
       } else {

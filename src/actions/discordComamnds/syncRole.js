@@ -3,6 +3,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 class SyncRoleCommand {
     constructor() {
+        this.public = true;
         this.data = new SlashCommandBuilder()
             .setName("syncrole")
             .setDescription("Configures a role to by synchronized.")

@@ -4,6 +4,13 @@ This is a passion project to develop a tool focusing on ARMA communities which u
 
 It allows automated synchronization of discord & teamspeak roles.
 
+## DEMO
+
+Demo servers are available at 
+https://discord.gg/UWj73GfD
+and 
+wc147.teamspeak3.com
+
 ## Current Features
 These are the features which currently exist in ts-discord-control;
 
@@ -94,3 +101,4 @@ The following file contents should be populated and correctly filled out for you
 }
 
 ```
+

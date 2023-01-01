@@ -17,11 +17,6 @@ async function initialize() {
         await teamspeakClientConnected(e)
     })
 
-    prepareDiscordListeners();
-}
-
-function prepareDiscordListeners() {
-    
     discord.client.on('guildMemberUpdate', member => {
         synchroniseUser(member.guild.members.cache.get(member.id))
     })

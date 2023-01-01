@@ -11,6 +11,7 @@ class Discord {
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildMessageReactions
             ],
         });
         
@@ -24,6 +25,7 @@ class Discord {
             }
         }
     }
+
     async connect() {
         return new Promise((resolve, reject) => {
             this.client.login(config.discord.token);
@@ -49,13 +51,25 @@ class Discord {
 
     async regsiterCommands() {
         let jsonCommands = [];
-        commands.forEach(x => jsonCommands.push(x.data.toJSON()));
+        commands.filter(x => x.public ).forEach(x => jsonCommands.push(x.data.toJSON()));
+        let devJsonCommands = [];
+        commands.filter(x => !x.public ).forEach(x => devJsonCommands.push(x.data.toJSON()));
         const rest = new REST({ version: '10' }).setToken(config.discord.token);
+        
         const data = await rest.put(
 			Routes.applicationGuildCommands(config.discord.clientID, config.discord.guild),
-			{ body: jsonCommands },
+			{ body: devJsonCommands },
 		);
-        console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+
+        console.log(`Successfully reloaded ${data.length} dev application (/) commands.`);
+
+        const data2 = await rest.put(
+			Routes.applicationCommands(config.discord.clientID),
+			{ body:  jsonCommands},
+		);
+
+        console.log(`Successfully reloaded ${data2.length} public application (/) commands.`);
+        
     }
     
     

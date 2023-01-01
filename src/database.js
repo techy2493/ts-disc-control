@@ -116,7 +116,7 @@ class Database {
                 if (err) {
                     reject(err);
                 }
-                resolve(row.teamspeakID);
+                resolve(row ? row.teamspeakID : null);
             })
         })
     }

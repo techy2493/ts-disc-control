@@ -104,6 +104,6 @@ dist
 .tern-port
 
 # sqlite
-.sqlite
+database.sqlite
 
 config.json

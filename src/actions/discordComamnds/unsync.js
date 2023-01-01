@@ -4,6 +4,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 class UnSyncCommand {
 
     constructor() {
+        this.public = true;
         this.data = new SlashCommandBuilder()
             .setName("unsync")
             .setDescription("Removes a role to by synchronized.")
@@ -20,7 +21,6 @@ class UnSyncCommand {
         const role = interaction.options.getMentionable('role');
         
         let synced = await db.getSynchronizedRoles();
-        console.log(synced)
         if (synced === undefined) {
             synced = []
         }
@@ -29,7 +29,6 @@ class UnSyncCommand {
         await db.removeSynchronizedRoles(role.name);
         
         synced = await db.getSynchronizedRoles();
-        console.log(synced)
         let syncedString = "Syncing: "
         synced.forEach((r, index) => {
             syncedString += r

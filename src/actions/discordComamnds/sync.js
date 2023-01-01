@@ -5,6 +5,7 @@ const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
 
 class SyncCommand {
     constructor() {
+        this.public = true;
         this.data = new SlashCommandBuilder()
             .setName("sync")
             .setDescription("Forces the user to resynchronize.")

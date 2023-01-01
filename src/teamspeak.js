@@ -1,6 +1,29 @@
 const { TeamSpeak, QueryProtocol, TextMessageTargetMode } = require("ts3-nodejs-library")
 const config =  require('./config');
+/*
+TODO: FIX THIS ON SERVER EDIT
 
+error EventError: could not fetch client with id 1995 in event "cliententerview"
+    at C:\Users\FuckMicrosoft\ts-disc-control\node_modules\ts3-nodejs-library\lib\TeamSpeak.js:208:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  eventName: 'cliententerview'
+}
+error EventError: could not fetch client with id 1996 in event "cliententerview"
+    at C:\Users\FuckMicrosoft\ts-disc-control\node_modules\ts3-nodejs-library\lib\TeamSpeak.js:208:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  eventName: 'cliententerview'
+}
+error EventError: could not fetch client with id 1996 in event "serveredited"
+    at C:\Users\FuckMicrosoft\ts-disc-control\node_modules\ts3-nodejs-library\lib\TeamSpeak.js:278:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  eventName: 'serveredited'
+}
+error EventError: could not fetch client with id 1997 in event "cliententerview"
+    at C:\Users\FuckMicrosoft\ts-disc-control\node_modules\ts3-nodejs-library\lib\TeamSpeak.js:208:23
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  eventName: 'cliententerview'
+}
+*/
 
 class TS {
     constructor() {
