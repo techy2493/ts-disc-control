@@ -4,6 +4,24 @@ This is a passion project to develop a tool focusing on ARMA communities which u
 
 It allows automated synchronization of discord & teamspeak roles.
 
+## How & Is it Safe?
+
+### What is it and how does it work?
+TS-DISC-Control is a Discord BOT, which should be used with a Discord Appliation & Bot. It does not automate any activity on your user account.
+
+When you connect to a teamspeak server with this bot connected you will recieve a message inidcating you should log in with discord (this is done through normal OAuth2 flows which protect you the user and do not ever give your credentials to anyone but Discord). This authorization is only for identification of the discord client in the discord server the bot is connected to.
+
+When your accounts are linked together you will automatically recieve and or lose the roles chosen to be synchronized (and only those) when you recieve or lose them in discord.
+
+At this time, we are not offering a hosted bot for this, we offer this code for your use and you must set up the bot with your own application & bot account to use it.
+
+### What is it not.
+TS-DISC-Control is NOT a self-bot. It will never act on your behalf with your account and it will not impersonate you or any other person.
+For the bot to start it must have a discord application & bot account associated for it to do anything at all.
+
+### Is it safe?
+Safety is always relative and we do not offer any warranty or guarantee. However, the project is designed to follow all Discord Terms of Service and rules. Any changes which impact this will be announced within 24 hours on discord. We have requested discord perform a validation of our code to ensure we are not in breach, however they currently only review bots with 75 active guids or more. We are still aiming to have this done and will update on discord when we can.
+
 ## DEMO
 
 Demo servers are available at 
