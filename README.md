@@ -22,6 +22,8 @@ For the bot to start it must have a discord application & bot account associated
 ### Is it safe?
 Safety is always relative and we do not offer any warranty or guarantee. However, the project is designed to follow all Discord Terms of Service and rules. Any changes which impact this will be announced within 24 hours on discord. We have requested discord perform a validation of our code to ensure we are not in breach, however they currently only review bots with 75 active guids or more. We are still aiming to have this done and will update on discord when we can.
 
+This bot does not collect or store sensitive user information, it does not retain any rights to the user account even those for identity after the user ID is connected. It does not read messages (and therefore does not require the message intent and we reccomend not turning it on in your application). The database file used in this application only stores Teamspeak user ids (DBIDs which uniquely identify the user to the server) and Discord Ids which uniquely identify the discord user on the discord server (guild). It does not store any information about which roles a user has assigned preferring to check every time a sync is triggered.
+
 ## DEMO
 
 Demo servers are available at 
@@ -83,6 +85,7 @@ This is entirely a work in progress and is subject to change
     - Optionally, add [user] param to force another user to be removed (if invoker has appropriate permissions)
 - /RegisterTeamspeakIdentity
     - Allow user to register their own TS id instead of logging in? (This may present a security issue??)
+- Sync discord bans, kicks, mutes to teamspeak???
 
 
 # SETUP
