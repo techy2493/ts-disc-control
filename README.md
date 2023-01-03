@@ -89,6 +89,8 @@ This is entirely a work in progress and is subject to change
 
 ## CONFIG FILE
 
+Step 1: Create your application & bot in Discord see: https://discordjs.guide/preparations/setting-up-a-bot-application.html
+
 The following file contents should be populated and correctly filled out for your server servers in config.json in the root of the application (next to index.js)
 
 ```
