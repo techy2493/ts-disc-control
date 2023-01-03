@@ -87,9 +87,15 @@ This is entirely a work in progress and is subject to change
 
 # SETUP
 
-## CONFIG FILE
+### Discord Bot
 
-Step 1: Create your application & bot in Discord see: https://discordjs.guide/preparations/setting-up-a-bot-application.html
+Create your application & bot in Discord see: https://discordjs.guide/preparations/setting-up-a-bot-application.html
+
+### Teamspeak
+
+Create a serverquery account for your bot to monitor teamspeak, send messages to users, and assign server groups.
+
+### CONFIG FILE
 
 The following file contents should be populated and correctly filled out for your server servers in config.json in the root of the application (next to index.js)
 
@@ -121,4 +127,6 @@ The following file contents should be populated and correctly filled out for you
 }
 
 ```
-
+### Running the bot
+Once the config file is filled out, run the bot by executing index.js with node.
+To make it run continually you may want to use PM2, see: https://discordjs.guide/improving-dev-environment/pm2.html#installation
