@@ -89,7 +89,9 @@ This is entirely a work in progress and is subject to change
 
 ### Discord Bot
 
-Create your application & bot in Discord see: https://discordjs.guide/preparations/setting-up-a-bot-application.html
+Create your application & bot in Discord
+For your token see: https://discordjs.guide/preparations/setting-up-a-bot-application.html
+For your clientID and clientSecret see: https://discordjs.guide/oauth2/#getting-an-oauth2-url
 
 ### Teamspeak
 
