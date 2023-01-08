@@ -86,7 +86,13 @@ This is entirely a work in progress and is subject to change
 - /RegisterTeamspeakIdentity
     - Allow user to register their own TS id instead of logging in? (This may present a security issue??)
 - Sync discord bans, kicks, mutes to teamspeak???
-
+- /funop <description>
+    - Create message with description indicating funop participation ping and reaction to join
+    -Create 3 buttons
+        - confirm (ping reactors with message saying confirmed will go on)
+        - start (ping reactors with messsage to join)
+        - cancel (ping reactors op is canceled)
+      
 
 # SETUP
 
