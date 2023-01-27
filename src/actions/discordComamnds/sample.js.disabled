@@ -1,0 +1,23 @@
+const db = require('../../database')
+const synchroniseUser = require('../synchronizeUser')
+const ts = require('../../teamspeak');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+
+class Command {
+    constructor() {
+        this.public = true;
+        this.data = new SlashCommandBuilder()
+            .setName("sample")
+            .setDescription("sample")
+            .addRoleOption(option => 
+                option.setName("user")
+                .setDescription("The user to be synchronized")
+            )
+    }
+    
+    async execute(interaction) {
+        interaction.options.getUser('user')
+    }
+}
+
+module.exports = new Command();
