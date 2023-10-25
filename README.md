@@ -30,7 +30,7 @@ This bot does not collect or store sensitive user information, it does not retai
 ## DEMO
 
 Demo servers are available at 
-https://discord.gg/UWj73GfD
+[https://discord.gg/UWj73GfD](https://discord.gg/muJjgA48)
 and 
 wc147.teamspeak3.com
 
