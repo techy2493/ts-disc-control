@@ -5,7 +5,9 @@ This is a passion project to develop a tool focusing on ARMA communities which u
 It allows automated synchronization of discord & teamspeak roles.
 
 ## Current Status
-I've not had enough interest in this to continue development. As of 9/29/2023 it still functions however no new functionality will be added unless users request it.
+I've not had enough interest in this to continue development. As of 9/29/2023 it still functions however no new functionality will be added unless users request it. 
+
+DEMO links updated, join the Demo server https://discord.gg/muJjgA48 to reach out to me directly, or feel free to post an issue and I will respond when I can.
 
 ## How & Is it Safe?
 
