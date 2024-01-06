@@ -5,7 +5,7 @@ This is a passion project to develop a tool focusing on ARMA communities which u
 It allows automated synchronization of discord & teamspeak roles.
 
 ## Current Status
-I've not had enough interest in this to continue new development. As of 12/27/2023 it still functions however no new functionality will be added unless users request it. 
+I've not had enough interest in this to continue new development. As of January 5th, 2024 it still functions however no new functionality will be added unless users request it. 
 
 DEMO links updated, join the Demo server https://discord.gg/SDHjZt9wYt to reach out to me directly, or feel free to post an issue and I will respond when I can.
 
@@ -32,7 +32,7 @@ This bot does not collect or store sensitive user information, it does not retai
 ## DEMO
 
 Demo servers are available at 
-[https://discord.gg/UWj73GfD](https://discord.gg/muJjgA48)
+https://discord.gg/SDHjZt9wYt
 and 
 wc147.teamspeak3.com
 
@@ -115,34 +115,7 @@ Create a serverquery account for your bot to monitor teamspeak, send messages to
 
 ### CONFIG FILE
 
-The following file contents should be populated and correctly filled out for your server servers in config.json in the root of the application (next to index.js)
-
-```
-{
-    "database": {
-        "sqlite" : {
-            "filename": "database.sqlite"
-        }
-    },
-    "discord": {
-        "token": "",
-        "guild": "",
-        "clientID": "",
-        "clientSecret": "",
-        "oAuthRedirect": "/redirect"
-    },
-    "teamspeak": {
-        "host": "",
-        "queryport": 10011,
-        "virtualServerId": "",
-        "username": "",
-        "password": ""
-    },
-    "web": {
-        "port": 8090,
-        "baseUrl": ""
-    }
-}
+See the configuration section of the wiki for information on configuring the bot, an example config file and descriptions of each configuration item and what it is used for.
 
 ```
 ### Running the bot
