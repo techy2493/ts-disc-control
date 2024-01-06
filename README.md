@@ -47,8 +47,9 @@ These are the features which currently exist in ts-discord-control;
     - Only roles configured to be synchronized are checked
         - If a role is set to sync and it exists in TS it will be added and removed from users who are properly logged in
         - If a role is not set to sync even if it exists in TS it will *not* be added or removed
-    - Log in wtith Discord
+    - Log in with Discord
         - When a user who is not connects to TS server they will recieve a message with a link to login through discord this connects their TS identity to their discord user
+    - If useOAuth is turned off teamspeak will send the client a message asking them to register their teamspeak id with a discord command
 
 - /syncRole [role]
     - Configures a discord role to be synchronized with a TS server group with a matching name
@@ -57,7 +58,9 @@ These are the features which currently exist in ts-discord-control;
 - /sync [user]
     - Synchornize the roles configured 
 - /tsid [user] [tsid]
-    - Allows an admin to manually configure a user's teamspeak id instead of requiring the user to login with teamspeak
+    - Allows an admin to manually configure a user's teamspeak id instead of requiring the user to login with discord oAuth through teamspeak
+- /register [user]
+    - Allows user to manually configure a their own teamspeak id instead of requiring the user to login discord oAuth
 
 ## Roadmap
 This is entirely a work in progress and is subject to change
