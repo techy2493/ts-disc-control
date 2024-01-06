@@ -3,19 +3,12 @@ const synchroniseUser = require("../synchronizeUser");
 const ts = require("../../teamspeak");
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
-class TSIDCommand {
+class RegisterCommand {
   constructor() {
     this.public = true;
     this.data = new SlashCommandBuilder()
-      .setName("tsid")
+      .setName("register")
       .setDescription("Registers a users teamspeak ID manually.")
-      .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
-      .addMentionableOption((option) =>
-        option
-          .setName("user")
-          .setDescription("The user to update teamspeak id of")
-          .setRequired(true)
-      )
       .addStringOption((option) =>
         option
           .setName("tsid")
@@ -25,8 +18,7 @@ class TSIDCommand {
   }
 
   async execute(interaction) {
-    const user = interaction.options.getMentionable("user");
-
+    const user = interaction.member;
     const tsid = interaction.options.getString("tsid");
     // TOOD: FIX INVALID CLIENT ERROR
     let client;
@@ -70,4 +62,4 @@ class TSIDCommand {
   //     }
 }
 
-module.exports = new TSIDCommand();
+module.exports = new RegisterCommand();

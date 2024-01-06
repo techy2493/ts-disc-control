@@ -1,140 +1,163 @@
-const config = require('./config');
-const sqlite3 = require('sqlite3').verbose();
+const config = require("./config");
+const sqlite3 = require("sqlite3").verbose();
 
 class Database {
-    
-    constructor() {
-        this.db = new sqlite3.Database(config.database.sqlite.filename)
-    }
+  constructor() {
+    this.db = new sqlite3.Database(
+      config.sqlite.filename ? config.sqlite.filename : "database.sqlite3"
+    );
+  }
 
-    
-    // TODO: Security, make BOTH discordId,  tsid column indipendently unique & handle the erros this casues
-    async initializeDatabase() {
-        return new Promise((resolve, reject) => {
-            this.db.serialize(() => {
-                this.db.run(`
+  // TODO: Security, make BOTH discordId,  tsid column indipendently unique & handle the erros this casues
+  async initializeDatabase() {
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+        this.db.run(
+          `
                 CREATE TABLE IF NOT EXISTS members (
                     id integer PRIMARY KEY AUTOINCREMENT,
                     discordID text NOT NULL UNIQUE,
-                    teamspeakID text)`, (err) => {
-                        if (err) {
-                            reject(err)
-                        }
-                    });
-                this.db.run(`
+                    teamspeakID text)`,
+          (err) => {
+            if (err) {
+              reject(err);
+            }
+          }
+        );
+        this.db.run(
+          `
                 CREATE TABLE IF NOT EXISTS roles (
                     id integer PRIMARY KEY AUTOINCREMENT,
                     discordName text NOT NULL UNIQUE
                 )
-                `, (err) => {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve()
-                })
-            });
-        });
-    }
+                `,
+          (err) => {
+            if (err) {
+              reject(err);
+            }
+            resolve();
+          }
+        );
+      });
+    });
+  }
 
-    async updateTeamspeakID(discordID, tsID){
-        return new Promise((resolve, reject) => {
-            this.db.run(`INSERT INTO members (discordID, teamspeakID)
+  async updateTeamspeakID(discordID, tsID) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        `INSERT INTO members (discordID, teamspeakID)
                        VALUES ('${discordID}','${tsID}')
                        ON CONFLICT(discordID) DO UPDATE SET
-                        teamspeakID = excluded.teamspeakID`, (err) => {
-                            if (err){
-                                console.log(err)
-                                reject(err);
-                            }
-                            resolve();
-                        })
-        })
-    }
+                        teamspeakID = excluded.teamspeakID`,
+        (err) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          }
+          resolve();
+        }
+      );
+    });
+  }
 
-    async getSynchronizedRoles() {
-        return new Promise((resolve, reject) => {
-            this.db.all(`SELECT discordName FROM roles`, (err, roles) => {
-                if (err) {
-                    reject(err)
-                }
-                resolve(roles.map(r => r.discordName))
-            })
-        })
-    }
+  async getSynchronizedRoles() {
+    return new Promise((resolve, reject) => {
+      this.db.all(`SELECT discordName FROM roles`, (err, roles) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(roles.map((r) => r.discordName));
+      });
+    });
+  }
 
-    async setSynchronizedRoles(roles) {
-        console.log(`INSERT INTO roles (discordName)
-        VALUES ${roles.map(role  => `(${role})`)}`)
-        return new Promise((resolve, reject) => {
-            this.db.serialize(() => {
-                this.db.run('DELETE FROM roles', (err) => {
-                    if (err) {
-                        reject(err)
-                    }
-                });
-                this.db.run(`INSERT INTO roles (discordName)
-                             VALUES ${roles.map(role  => `('${role}')`)}`
-                             , (err) => {
-                                 if (err) {
-                                     reject(err)
-                                 }
-                                 resolve();
-                             });
-            });
-        })
-    }
-
-    async addSynchronizedRoles(role) {
-        return new Promise((resolve, reject) => {
-            this.db.run(`INSERT OR IGNORE INTO roles (discordName)
-                         VALUES ('${role}')`, (err) => {
-                            if (err) {
-                                reject(err);
-                            }
-                            resolve();
-                         });
+  async setSynchronizedRoles(roles) {
+    console.log(`INSERT INTO roles (discordName)
+        VALUES ${roles.map((role) => `(${role})`)}`);
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+        this.db.run("DELETE FROM roles", (err) => {
+          if (err) {
+            reject(err);
+          }
         });
-    }
+        this.db.run(
+          `INSERT INTO roles (discordName)
+                             VALUES ${roles.map((role) => `('${role}')`)}`,
+          (err) => {
+            if (err) {
+              reject(err);
+            }
+            resolve();
+          }
+        );
+      });
+    });
+  }
 
-    async removeSynchronizedRoles(role) {
-        return new Promise((resolve, reject) => {
-            this.db.run(`DELETE FROM roles
-                         WHERE discordName =  '${role}'`, (err) => {
-                            if (err) {
-                                reject(err);
-                            }
-                            resolve();
-                         });
-        });
-    }
+  async addSynchronizedRoles(role) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        `INSERT OR IGNORE INTO roles (discordName)
+                         VALUES ('${role}')`,
+        (err) => {
+          if (err) {
+            reject(err);
+          }
+          resolve();
+        }
+      );
+    });
+  }
 
-    
+  async removeSynchronizedRoles(role) {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        `DELETE FROM roles
+                         WHERE discordName =  '${role}'`,
+        (err) => {
+          if (err) {
+            reject(err);
+          }
+          resolve();
+        }
+      );
+    });
+  }
 
-    async getTeamspeakIDByDiscordId(id) {
-        return new Promise((resolve, reject) => {
-            this.db.get('SELECT teamspeakID from members WHERE discordID = ?', [id], (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                resolve(row ? row.teamspeakID : null);
-            })
-        })
-    }
+  async getTeamspeakIDByDiscordId(id) {
+    return new Promise((resolve, reject) => {
+      this.db.get(
+        "SELECT teamspeakID from members WHERE discordID = ?",
+        [id],
+        (err, row) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(row ? row.teamspeakID : null);
+        }
+      );
+    });
+  }
 
-    async getDiscodIDByTeamspeakID(id) {
-        return new Promise((resolve, reject) => {
-            this.db.get('SELECT discordID from members WHERE teamspeakID = ?', [id], (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                if (row) {
-                    resolve(row.discordID);
-                } else {
-                    resolve(undefined);
-                }
-            })
-        })
-    }
+  async getDiscodIDByTeamspeakID(id) {
+    return new Promise((resolve, reject) => {
+      this.db.get(
+        "SELECT discordID from members WHERE teamspeakID = ?",
+        [id],
+        (err, row) => {
+          if (err) {
+            reject(err);
+          }
+          if (row) {
+            resolve(row.discordID);
+          } else {
+            resolve(undefined);
+          }
+        }
+      );
+    });
+  }
 }
 
-module.exports = new Database()
+module.exports = new Database();

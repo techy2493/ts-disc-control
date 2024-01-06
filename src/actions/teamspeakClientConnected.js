@@ -17,20 +17,34 @@ module.exports = async function (event) {
         synchronizeUser(discordMember, tsid, true);
       }
     } else {
-      await teamspeak.sendMessageToClient(
-        event.client,
-        config.teamspeak.welcomeMessageText
-          ? config.teamspeak.welcomeMessageText
-          : "Hello! You seem to be new here. Please connect your discord account by logging in with the link below."
-      );
-      await teamspeak.sendMessageToClient(
-        event.client,
-        `${
-          config.web.clientBaseUrl
-            ? config.web.clientBaseUrl
-            : config.web.baseUrl
-        }${config.web.loginUrl}?tsid=${btoa(tsid)}`
-      );
+      if (!config.discord.useOAuth) {
+        await teamspeak.sendMessageToClient(
+          event.client,
+          config.teamspeak.welcomeMessageText
+            ? config.teamspeak.welcomeMessageText
+            : "Hello! You seem to be new here. Please connect your discord account by logging in with the link below."
+        );
+        await teamspeak.sendMessageToClient(
+          event.client,
+          `Please use the /register command in the ${config.discord.commandChannelName} channel in discord with the following teamspeak-id`
+        );
+        await teamspeak.sendMessageToClient(event.client, `${tsid}`);
+      } else {
+        await teamspeak.sendMessageToClient(
+          event.client,
+          config.teamspeak.welcomeMessageText
+            ? config.teamspeak.welcomeMessageText
+            : "Hello! You seem to be new here. Please connect your discord account by logging in with the link below."
+        );
+        await teamspeak.sendMessageToClient(
+          event.client,
+          `${
+            config.web.clientBaseUrl
+              ? config.web.clientBaseUrl
+              : config.web.baseUrl
+          }${config.web.loginUrl}?tsid=${btoa(tsid)}`
+        );
+      }
     }
     resolve();
   });
