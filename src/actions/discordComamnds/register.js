@@ -29,11 +29,16 @@ class RegisterCommand {
     if (client) {
       await db.updateTeamspeakID(user.user.id, tsid);
       await synchroniseUser(user, tsid);
-      interaction.reply(`Teamspeak ID of ${user.user.username} updated!`);
+      interaction.reply({
+        content: `Teamspeak ID of ${user.user.username} updated!`,
+        ephemeral: true,
+      });
     } else {
-      interaction.reply(
-        "Sorry I can't find that ID in teamspeak, please make sure you have connected to the server before and that you have used the ID for the correct identity. If you need help contact a member of high command."
-      );
+      interaction.reply({
+        content:
+          "Sorry I can't find that ID in teamspeak, please make sure you have connected to the server before and that you have used the ID for the correct identity. If you need help contact a member of high command.",
+        ephemeral: true,
+      });
     }
   }
 
