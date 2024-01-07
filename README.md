@@ -91,8 +91,6 @@ This is entirely a work in progress and is subject to change
 - /ForgetMe
     - Remove Discord / TSID from database so the user will receive a prompt to log in again when they connect to TS
     - Optionally, add [user] param to force another user to be removed (if invoker has appropriate permissions)
-- /RegisterTeamspeakIdentity
-    - Allow user to register their own TS id instead of logging in? (This may present a security issue??)
 - Sync discord bans, kicks, mutes to teamspeak???
 - /funop <description>
     - Create message with description indicating funop participation ping and reaction to join
