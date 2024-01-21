@@ -4,6 +4,10 @@ This is a passion project to develop a tool focusing on ARMA communities which u
 
 It allows automated synchronization of discord & teamspeak roles.
 
+## Hosting
+
+If enough interest is expressed I will consider making this a hosted bot for a monthly subscription instead of requiring you to host it yourself. I know that the knowledge requirements and platform requirements are a barrier to entry for some, however until there is enough interest I cannot justify the cost to host it at what I would feel comfortable charging for a subscription. I am willing to help setup everything you need to host it for a one time fee however, so reach out to me on discord to discuss this option if it feels like a good fit.
+
 ## Current Status
 I've not had enough interest in this to continue new development. As of January 5th, 2024 it still functions however no new functionality will be added unless users request it. 
 
