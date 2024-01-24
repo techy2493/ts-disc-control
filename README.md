@@ -9,7 +9,7 @@ It allows automated synchronization of discord & teamspeak roles.
 If enough interest is expressed I will consider making this a hosted bot for a monthly subscription instead of requiring you to host it yourself. I know that the knowledge requirements and platform requirements are a barrier to entry for some, however until there is enough interest I cannot justify the cost to host it at what I would feel comfortable charging for a subscription. I am willing to help setup everything you need to host it for a one time fee however, so reach out to me on discord to discuss this option if it feels like a good fit.
 
 ## Current Status
-I've not had enough interest in this to continue new development. As of January 5th, 2024 it still functions however no new functionality will be added unless users request it. 
+As of 01/24/23 the project is active and taking change requets. Join us on discord at the link below or put in an issue. We don't guarantee a response time but if you let us know how negatively something is impacting your community we will do our best to make the top problems a priority.
 
 DEMO links updated, join the Demo server https://discord.gg/SDHjZt9wYt to reach out to me directly, or feel free to post an issue and I will respond when I can.
 
