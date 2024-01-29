@@ -30,7 +30,7 @@ class UnSyncCommand {
     synced = await db.getSynchronizedRoles();
     let syncedString = "Syncing: ";
     synced.forEach((r, index) => {
-      syncedString += r;
+      syncedString += r.discord + " -> " + r.teamspeak;
       if (index < synced.length - 1) syncedString += ", ";
     });
     interaction.reply({ content: syncedString, ephemeral: true });

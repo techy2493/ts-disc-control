@@ -1,70 +1,146 @@
 const ts = require("../teamspeak");
 const db = require("../database");
 const _ = require("lodash");
+const config = require("../config");
 
-async function getTeamspeakRoles(cldbID) {
-  let roles = await ts.client.serverGroupsByClientId(cldbID);
+// TODO: MOVE TS CLIENT CODE TO TEAMSPEAK.JS
+async function getTeamspeakRoles(cldbID, roles) {
+  let tsRoles = await ts.client.serverGroupsByClientId(cldbID).catch((ex) => {
+    console.log("cldbid ", cldbID, ex);
+  });
   let roleNames = [];
-  roles.forEach((r) => roleNames.push(r.name));
+  let rolesKeyedByTeamspeak = _.keyBy(roles, "teamspeak");
+  tsRoles.forEach((r) => {
+    if (rolesKeyedByTeamspeak[r.name])
+      roleNames.push(rolesKeyedByTeamspeak[r.name]);
+  });
   return roleNames;
 }
 
-async function getDiscordRoles(member) {
-  let roles = member.roles.cache;
+// TODO: MOVE DISCORD CLIENT CODE TO DISCORD.JS
+async function getDiscordRoles(member, roles) {
+  let discordRoles = member.roles.cache;
   let roleNames = [];
-  roles.forEach((r) => roleNames.push(r.name));
+  let rolesKeyedByDiscord = _.keyBy(roles, "discord");
+  discordRoles.forEach((r) => {
+    if (rolesKeyedByDiscord[r.name])
+      roleNames.push(rolesKeyedByDiscord[r.name]);
+  });
   return roleNames;
 }
 
-module.exports = async function synchroniseUser(member, silent) {
+// TODO: MOVE TS CLIENT CODE TO TEAMSPEAK.JS
+function GetPrimaryAndSecondaryRoles(discordRoles, TeamspeakRoles) {
+  return config.bot.master === "discord"
+    ? { masterRoles: discordRoles, secondaryRoles: TeamspeakRoles }
+    : { masterRoles: TeamspeakRoles, secondaryRoles: discordRoles };
+}
+
+/*
+  master [ 1, 2]
+  second [ 1, 3 ]
+  diff = [2, 3]
+  intersect(master, diff) = [2]
+  intersect(second, diff) = [3]
+*/
+
+async function getMissingRoles(discordRoles, teamspeakRoles) {
+  let { masterRoles, secondaryRoles } = GetPrimaryAndSecondaryRoles(
+    discordRoles,
+    teamspeakRoles
+  );
+  console.log("missing roles executed");
+  let missing = _.difference(masterRoles, secondaryRoles);
+  return missing;
+}
+
+async function getExtraRoles(discordRoles, teamspeakRoles) {
+  let { masterRoles, secondaryRoles } = GetPrimaryAndSecondaryRoles(
+    discordRoles,
+    teamspeakRoles
+  );
+  let extra = _.difference(secondaryRoles, masterRoles);
+  return extra;
+}
+
+async function addTeamspeakRole(cldbID, role) {
+  let group = await ts.client
+    .getServerGroupByName(role.teamspeak)
+    .catch((ex) => {
+      console.log("cldbid ", cldbID, "role ", role, ex);
+    });
+  if (!group) return console.log("Group ", role, "not found!");
+  await ts.client.serverGroupAddClient(cldbID, group).catch((ex) => {
+    console.log("cldbID ", cldbID, "role ", role, ex);
+  });
+}
+
+async function removeTeamspeakRole(cldbId, role) {
+  let group = await ts.client
+    .getServerGroupByName(role.teamspeak)
+    .catch((ex) => {
+      console.log("cldbid ", cldbID, "role ", role, ex);
+    });
+  if (!group) return console.log("Group ", role, "not found!");
+  await ts.client.serverGroupDelClient(cldbId, group).catch((ex) => {
+    console.log("cldbId ", cldbId, "role ", role, ex);
+  });
+}
+
+// TODO: IMPLMENT DISCORD CLIENT CODE IN DISCORD.JS & THIS FUNCTION
+async function addDiscordRole(member, role) {
+  throw new Error("Not implemented");
+}
+
+// TODO: IMPLMENT DISCORD CLIENT CODE IN DISCORD.JS & THIS FUNCTION
+async function removeDiscordRole(member, role) {
+  throw new Error("Not implemented");
+}
+
+async function sync(tsID, member) {
   try {
-    tsID = await db.getTeamspeakIDByDiscordId(member.user.id);
-    let cldbID = (await ts.client.clientGetDbidFromUid(tsID)).cldbid;
-    let discordRoles = await getDiscordRoles(member);
-    let teamspeakRoles = await getTeamspeakRoles(cldbID);
+    console.log("syncing", tsID, member.user.name);
+    let teamspeakId = (await ts.client.clientGetDbidFromUid(tsID)).cldbid;
     let syncedRoles = await db.getSynchronizedRoles();
-
-    console.log(teamspeakRoles, discordRoles, syncedRoles);
-    missingRoles = _.intersection(
-      syncedRoles,
-      _.difference(discordRoles, teamspeakRoles)
-    );
-    extraRoles = _.intersection(
-      syncedRoles,
-      _.difference(teamspeakRoles, discordRoles)
+    let RolesUserHasDiscord = await getDiscordRoles(member, syncedRoles);
+    let RolesUserHasTeamspeak = await getTeamspeakRoles(
+      teamspeakId,
+      syncedRoles
     );
 
-    console.log(missingRoles, extraRoles);
+    missingRoles = await getMissingRoles(
+      RolesUserHasDiscord,
+      RolesUserHasTeamspeak
+    );
+    extraRoles = await getExtraRoles(
+      RolesUserHasDiscord,
+      RolesUserHasTeamspeak
+    );
 
+    console.log("Roles User Has Discord: ", RolesUserHasDiscord);
+    console.log("Roles User Has Teamspeak: ", RolesUserHasTeamspeak);
+
+    console.log("Missing Roles: ", missingRoles);
     for (const role of missingRoles) {
-      console.log(role);
-      let group = await ts.client.getServerGroupByName(role);
-      if (!group) {
-        console.log("Group ", role, "not found!");
-        continue;
-      }
-
-      await ts.client.serverGroupAddClient(cldbID, group);
+      config.bot.master === "discord"
+        ? addTeamspeakRole(teamspeakId, role)
+        : addDiscordRole(member, role);
     }
 
+    console.log("Extra Roles: ", extraRoles);
     for (let role of extraRoles) {
-      let group = await ts.client.getServerGroupByName(role);
-      if (!group) return console.log("Group ", role, "not found!");
-      await ts.client.serverGroupDelClient(cldbID, group);
-    }
-
-    var tsClient = await ts.client.getClientByUid(tsID);
-    if (tsClient) {
-      if (!silent) {
-        ts.sendMessageToClient(
-          tsClient,
-          "Your roles have been updated automatically!"
-        );
-      }
-    } else {
-      console.log("User was offline");
+      config.bot.master === "discord"
+        ? removeTeamspeakRole(teamspeakId, role)
+        : removeDiscordRole(member, role);
     }
   } catch (ex) {
     console.log("Error synchronising user: " + member.username, ex);
+  }
+}
+
+module.exports = async function synchroniseUser(member) {
+  tsIDs = await db.getTeamspeakIDByDiscordId(member.user.id);
+  for (const tsID of tsIDs) {
+    await sync(tsID, member);
   }
 };

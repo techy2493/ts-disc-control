@@ -42,7 +42,7 @@ class SyncCommand {
     }
 
     if (client) {
-      await synchroniseUser(interaction.member, tsid);
+      await synchroniseUser(member);
       interaction.reply({
         content: `Roles of ${member.user.username} synchronized!`,
         ephemeral: true,

@@ -57,6 +57,30 @@ class Discord {
           });
         }
       });
+
+      // this.client.on(Events.Debug, (message) => {
+      //   console.log(message);
+      // });
+
+      // this.client.on(Events.Error, (message) => {
+      //   console.log(message);
+      // });
+
+      // this.client.on(Events.Warn, (message) => {
+      //   console.log(message);
+      // });
+
+      // this.client.on(Events.GuildUnavailable, (message) => {
+      //   console.log(message);
+      // });
+
+      // this.client.on(Events.GuildRoleUpdate, (message) => {
+      //   console.log(message);
+      // });
+
+      // this.client.on(Events.Raw, (message) => {
+      //   console.log(message);
+      // });
     });
   }
 
