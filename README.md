@@ -46,7 +46,7 @@ These are the features which currently exist in ts-discord-control;
 - Discord Bot
 - Synchronizaton of a users's discord roles to Teamspeak.
     - Currently only Discord can be the master
-    - Configured roles to be synchornized must exist with an identical name in teamspeak
+    - Roles can be configured with the /syncrole command which takes a mentionable role in discord and a string name of the teamspeak group to be synchronized
     - Only TS server group are supported
     - Only roles configured to be synchronized are checked
         - If a role is set to sync and it exists in TS it will be added and removed from users who are properly logged in
@@ -55,7 +55,7 @@ These are the features which currently exist in ts-discord-control;
         - When a user who is not connects to TS server they will recieve a message with a link to login through discord this connects their TS identity to their discord user
     - If useOAuth is turned off teamspeak will send the client a message asking them to register their teamspeak id with a discord command
 
-- /syncRole [role]
+- /syncRole [role] [ts-group]
     - Configures a discord role to be synchronized with a TS server group with a matching name
 - /unsync [role]
     - Removes a role from synchronization
@@ -82,7 +82,6 @@ This is entirely a work in progress and is subject to change
     - Would allow users to search history by trainee
     - Guage Interest: Allow Users to grant / revoke roles from here
     - Login with discord
-- Update TS group management to use TS gid instead of name
 - Guage Interst: Support TS channel groups???
 - Put a message in a channel (configruable) when RoleRequest is made
 - General log channel (configurable) which will track all syncronizations, and requests, and authorizations
