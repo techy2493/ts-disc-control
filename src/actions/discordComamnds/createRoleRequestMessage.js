@@ -69,7 +69,7 @@ class CreateRoleRequestMessageCommand {
     // } catch (ex) { console.log(ex) }
 
     // if (client) {
-    //     await synchroniseUser(interaction.member, tsid)
+    //     await synchroniseUser(interaction.member)
     //     interaction.reply(`Roles of ${member.user.username} synchronized!`)
     // } else {
     //     interaction.reply("Sorry I can't find that ID in teamspeak, please make sure you have connected to the server before and that you have used the ID for the correct identity. If you need help contact a member of high command.")

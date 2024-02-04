@@ -25,7 +25,7 @@ class TSIDCommand {
   }
 
   async execute(interaction) {
-    const user = interaction.options.getMentionable("user");
+    const member = interaction.options.getMentionable("user");
 
     const tsid = interaction.options.getString("tsid");
     // TOOD: FIX INVALID CLIENT ERROR
@@ -35,10 +35,10 @@ class TSIDCommand {
     } catch {}
 
     if (client) {
-      await db.updateTeamspeakID(user.user.id, tsid);
-      await synchroniseUser(user, tsid);
+      await db.addTeamspeakID(member.user.id, tsid);
+      await synchroniseUser(member);
       interaction.reply({
-        content: `Teamspeak ID of ${user.user.username} updated!`,
+        content: `Teamspeak ID of ${member.user.username} updated!`,
         ephemeral: true,
       });
     } else {
@@ -64,7 +64,7 @@ class TSIDCommand {
   //             let tsID = args[1];
   //             let client = await ts.client.clientGetDbidFromUid(tsID)
   //             if (client) {
-  //                 await db.updateTeamspeakID(message.member.id, tsID)
+  //                 await db.addTeamspeakID(message.member.id, tsID)
   //                 await synchroniseUser(message.member, tsID)
   //                 message.channel.send("Thanks! I've updated your teamspeak identity and synchronized your roles!");
   //             } else {

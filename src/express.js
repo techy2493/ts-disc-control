@@ -78,7 +78,7 @@ app.get(
 
     if (req.cookies.tsid && json.id) {
       var tsid = atob(req.cookies.tsid);
-      db.updateTeamspeakID(json.id, tsid);
+      db.addTeamspeakID(json.id, tsid);
       let guild = discord.client.guilds.cache.get(config.discord.guild);
       let member;
       guild.members.fetch({ withPresences: true }).then((fetchedMembers) => {
