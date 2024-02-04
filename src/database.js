@@ -15,7 +15,7 @@ class Database {
         var tables = await this.executeQuery(
           `SELECT name FROM sqlite_master WHERE type='table' AND name='members';`
         );
-        if (tables && tables[0] && tables[0].name !== "members") {
+        if (!tables || !tables[0] || tables[0].name !== "members") {
           await this.createDatabase();
         }
 

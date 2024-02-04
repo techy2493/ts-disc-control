@@ -112,6 +112,7 @@ async function sync(tsID, member) {
       RolesUserHasDiscord,
       RolesUserHasTeamspeak
     );
+
     extraRoles = await getExtraRoles(
       RolesUserHasDiscord,
       RolesUserHasTeamspeak
