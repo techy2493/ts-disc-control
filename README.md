@@ -1,8 +1,13 @@
 # ts-disc-control
 
-This is a passion project to develop a tool focusing on ARMA communities which use both TS and Discord for their voice communications. 
+This is a passion project to develop a tool focusing on communities which use both TS and Discord for their voice communications. 
 
 It allows automated synchronization of discord & teamspeak roles.
+
+## Join us on Discord!
+https://discord.gg/SDHjZt9wYt
+
+Join us in the TS-Disc-Control Discord to recieve notifications of updates, get help, and partake in discussions about features being implemented and to help choose the new features for each release!
 
 ## Hosting
 
