@@ -30,5 +30,8 @@
     "source-server-query": "^3.0.3",
     "sqlite3": "^5.1.4",
     "ts3-nodejs-library": "^3.4.1"
+  },
+  "devDependencies": {
+    "@microsoft/eslint-formatter-sarif": "^3.0.0"
   }
 }
