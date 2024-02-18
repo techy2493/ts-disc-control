@@ -28,7 +28,7 @@
     "openid-client": "^5.3.1",
     "querystring": "^0.2.1",
     "source-server-query": "^3.0.3",
-    "sqlite3": "^5.1.4",
+    "sqlite3": "^5.1.5",
     "ts3-nodejs-library": "^3.4.1"
   },
   "devDependencies": {
