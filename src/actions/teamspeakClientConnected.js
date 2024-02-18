@@ -5,6 +5,12 @@ import db from "../database.js";
 import synchronizeUser from "./synchronizeUser.js";
 import discord from "../discord.js";
 
+function contactUser(tsid, message) {
+  config.teamspeak.usePokes
+    ? teamspeak.sendPokeToClient(tsid, message)
+    : teamspeak.sendMessageToClient(tsid, message);
+}
+
 export default async function (event) {
   return new Promise(async (resolve, reject) => {
     var tsid = event.client.propcache.clientUniqueIdentifier;
@@ -18,25 +24,25 @@ export default async function (event) {
       }
     } else {
       if (!config.discord.useOAuth) {
-        await teamspeak.sendMessageToClient(
+        await contactUser(
           event.client,
           config.teamspeak.welcomeMessageText
             ? config.teamspeak.welcomeMessageText
             : "Hello! You seem to be new here. Please connect your discord account by logging in with the link below."
         );
-        await teamspeak.sendMessageToClient(
+        await contactUser(
           event.client,
           `Please use the /register command in the ${config.discord.commandChannelName} channel in discord with the following teamspeak-id`
         );
-        await teamspeak.sendMessageToClient(event.client, `${tsid}`);
+        await contactUser(event.client, `${tsid}`);
       } else {
-        await teamspeak.sendMessageToClient(
+        await contactUser(
           event.client,
           config.teamspeak.welcomeMessageText
             ? config.teamspeak.welcomeMessageText
             : "Hello! You seem to be new here. Please connect your discord account by logging in with the link below."
         );
-        await teamspeak.sendMessageToClient(
+        await contactUser(
           event.client,
           `${
             config.web.clientBaseUrl

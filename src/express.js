@@ -8,8 +8,15 @@ import db from "./database.js";
 import discord from "./discord.js";
 import synchronizeUser from "./actions/synchronizeUser.js";
 import config from "./config.js";
+import log from "./log.js";
 
 class Web {
+  catchAsync = (fn) => (req, res, next) => {
+    const routePromise = fn(req, res, next);
+    if (routePromise.catch) {
+      routePromise.catch((err) => next(err));
+    }
+  };
   constructor() {
     this.app = express();
     this.port = config.web.port;
@@ -23,8 +30,8 @@ class Web {
       if (!req.query.tsid) throw new Error("NoTSIDProvided");
       const tsid = req.query.tsid;
       res.cookie("tsid", tsid, { maxage: 3000 });
-      res.this.redirect(
-        `https://discordthis.app.com/api/oauth2/authorize?this.CLIENT_ID=${this.CLIENT_ID}&scope=identify&response_type=code&this.redirect_uri=${this.redirect}`
+      res.redirect(
+        `https://discordapp.com/api/oauth2/authorize?client_id=${this.CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${this.redirect}`
       );
     });
 
@@ -33,7 +40,7 @@ class Web {
     });
 
     this.app.get(
-      "/this.redirect",
+      "/redirect",
       this.catchAsync(async (req, res) => {
         if (!req.query.code) throw new Error("NoCodeProvided");
         const code = req.query.code;
@@ -45,7 +52,7 @@ class Web {
         });
         // debugger;
         const response = await fetch(
-          `https://discordthis.app.com/api/oauth2/token`,
+          `https://discordapp.com/api/oauth2/token`,
           {
             method: "POST",
             headers: {
@@ -56,7 +63,7 @@ class Web {
           }
         );
         const json = await response.json();
-        res.this.redirect(`/token?token=${json.access_token}`);
+        res.redirect(`/token?token=${json.access_token}`);
       })
     );
 
@@ -65,15 +72,12 @@ class Web {
       this.catchAsync(async (req, res) => {
         if (!req.query.token) throw new Error("NoTokenProvided");
         const token = req.query.token;
-        const response = await fetch(
-          "https://discordthis.app.com/api/users/@me",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch("https://discordapp.com/api/users/@me", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const json = await response.json();
 
         if (req.cookies.tsid && json.id) {
@@ -84,9 +88,9 @@ class Web {
           guild.members
             .fetch({ withPresences: true })
             .then((fetchedMembers) => {
-              const totalOnline = fetchedMembers.filter(
-                (member) => member.presence?.status === "online"
-              );
+              // const totalOnline = fetchedMembers.filter(
+              //   (member) => member.presence?.status === "online"
+              // );
               member = fetchedMembers.get(json.id);
               if (member) {
                 synchronizeUser(
@@ -95,15 +99,26 @@ class Web {
                     .members.cache.get(json.id),
                   tsid
                 );
-              } else console.log("The user didn't exist>!?!?");
-              // Now you have a collection with all online member objects in the totalOnline variable
+              } else
+                log.error(
+                  "Could not register from OAuth discord ID did not exist in the discord server - $discordId - $tsid",
+                  {
+                    tsid: req.cookies.tsid,
+                    discordId: json.id,
+                  }
+                );
             });
         } else {
-          console.log("Missing an ID, ", req.cookies.tsid, json.id);
+          log.error(
+            "Could not register from OAuth did not recieve tsid - $discordId",
+            {
+              discordId: json.id,
+            }
+          );
         }
 
         if (config.web.clientBaseUrl) {
-          res.this.redirect(config.web.clientBaseUrl);
+          res.redirect(config.web.clientBaseUrl);
         } else {
           res.send(
             `Hello ${json.username} your Discord ID is ${json.id}, you Teamspeak ID is ${req.cookies.tsid}. <br /> If you have problems with synchronization send the line above to high command!`
@@ -120,16 +135,9 @@ class Web {
     );
 
     this.app.listen(this.port, () => {
-      console.log(`OAuth Login listening at http://localhost:${this.port}`);
+      log.system(`OAuth Login listening at http://localhost:${this.port}`);
     });
   }
-
-  catchAsync = (fn) => (req, res, next) => {
-    const routePromise = fn(req, res, next);
-    if (routePromise.catch) {
-      routePromise.catch((err) => next(err));
-    }
-  };
 }
 
 export default new Web();

@@ -5,6 +5,7 @@ import discord from "./src/discord.js";
 import _ from "lodash";
 import teamspeakClientConnected from "./src/actions/teamspeakClientConnected.js";
 import synchroniseUser from "./src/actions/synchronizeUser.js";
+import log from "./src/log.js";
 
 // Initialize Connections to Servers
 async function initialize() {
@@ -17,8 +18,12 @@ async function initialize() {
   });
 
   discord.client.on("guildMemberUpdate", (member) => {
-    console.log("Guild Member Update");
-    synchroniseUser(member.guild.members.cache.get(member.id));
+    log.info("Discord User Updated - $discordName - $discordId", {
+      discordName: member.user.username,
+      discordId: member.id,
+    });
+    r;
+    synchroniseUser(member);
   });
 }
 

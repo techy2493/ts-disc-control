@@ -2,11 +2,15 @@ import ts from "../teamspeak.js";
 import db from "../database.js";
 import _ from "lodash";
 import config from "../config.js";
+import log from "../log.js";
 
 // TODO: MOVE TS CLIENT CODE TO TEAMSPEAK.JS
 async function getTeamspeakRoles(cldbID, roles) {
   let tsRoles = await ts.client.serverGroupsByClientId(cldbID).catch((ex) => {
-    console.log("cldbid ", cldbID, ex);
+    log.error("Could not get TS client information $tsClientId $exception", {
+      tsClientId: cldbid,
+      exception: ex,
+    });
   });
   let roleNames = [];
   let rolesKeyedByTeamspeak = _.keyBy(roles, "teamspeak");
@@ -49,7 +53,6 @@ async function getMissingRoles(discordRoles, teamspeakRoles) {
     discordRoles,
     teamspeakRoles
   );
-  console.log("missing roles executed");
   let missing = _.difference(masterRoles, secondaryRoles);
   return missing;
 }
@@ -67,11 +70,33 @@ async function addTeamspeakRole(cldbID, role) {
   let group = await ts.client
     .getServerGroupByName(role.teamspeak)
     .catch((ex) => {
-      console.log("cldbid ", cldbID, "role ", role, ex);
+      log.error(
+        "Could get group to update user TS roles! $clientId $role $exception",
+        {
+          clientId: cldbID,
+          role: role,
+          exception: ex,
+        }
+      );
     });
-  if (!group) return console.log("Group ", role, "not found!");
+  if (!group)
+    return log.error(
+      "Failed to add client to group! Group not found! $clientId $role",
+      {
+        clientId: cldbID,
+        role: role,
+        exception: ex,
+      }
+    );
   await ts.client.serverGroupAddClient(cldbID, group).catch((ex) => {
-    console.log("cldbID ", cldbID, "role ", role, ex);
+    log.error(
+      "Could not add user to teamspeak group $clientId $role $exception",
+      {
+        clientId: cldbID,
+        role: role,
+        exception: ex,
+      }
+    );
   });
 }
 
@@ -79,27 +104,54 @@ async function removeTeamspeakRole(cldbId, role) {
   let group = await ts.client
     .getServerGroupByName(role.teamspeak)
     .catch((ex) => {
-      console.log("cldbid ", cldbID, "role ", role, ex);
+      log.error(
+        "Could get group to update user TS roles! $clientId $role $exception",
+        {
+          clientId: cldbID,
+          role: role,
+          exception: ex,
+        }
+      );
     });
-  if (!group) return console.log("Group ", role, "not found!");
+  if (!group)
+    return log.error(
+      "Failed to add client to group! Group not found! $clientId $role",
+      {
+        clientId: cldbID,
+        role: role,
+        exception: ex,
+      }
+    );
   await ts.client.serverGroupDelClient(cldbId, group).catch((ex) => {
-    console.log("cldbId ", cldbId, "role ", role, ex);
+    log.error(
+      "Could not remove user from teamspeak group $clientId $role $exception",
+      {
+        clientId: cldbID,
+        role: role,
+        exception: ex,
+      }
+    );
   });
 }
 
 // TODO: IMPLMENT DISCORD CLIENT CODE IN DISCORD.JS & THIS FUNCTION
 async function addDiscordRole(member, role) {
+  log.error("Discord Role Management Not Implemented");
   throw new Error("Not implemented");
 }
 
 // TODO: IMPLMENT DISCORD CLIENT CODE IN DISCORD.JS & THIS FUNCTION
 async function removeDiscordRole(member, role) {
+  log.error("Discord Role Management Not Implemented");
   throw new Error("Not implemented");
 }
 
 async function sync(tsID, member) {
   try {
-    console.log("syncing", tsID, member.user.name);
+    log.info("Beginning Sychronisation of User $discordName $tsID", {
+      discordName: member.user.username,
+      tsID: tsID,
+    });
     let teamspeakId = (await ts.client.clientGetDbidFromUid(tsID)).cldbid;
     let syncedRoles = await db.getSynchronizedRoles();
     let RolesUserHasDiscord = await getDiscordRoles(member, syncedRoles);
@@ -117,24 +169,31 @@ async function sync(tsID, member) {
       RolesUserHasTeamspeak
     );
 
-    console.log("Roles User Has Discord: ", RolesUserHasDiscord);
-    console.log("Roles User Has Teamspeak: ", RolesUserHasTeamspeak);
+    log.debug("Roles User Has Discord: $RolesUserHasDiscord", {
+      RolesUserHasDiscord,
+    });
+    log.debug("Roles User Has Teamspeak: $RolesUserHasTeamspeak", {
+      RolesUserHasTeamspeak,
+    });
 
-    console.log("Missing Roles: ", missingRoles);
+    log.debug("Missing Roles: $missingRoles", { missingRoles });
     for (const role of missingRoles) {
       config.bot.master === "discord"
         ? addTeamspeakRole(teamspeakId, role)
         : addDiscordRole(member, role);
     }
 
-    console.log("Extra Roles: ", extraRoles);
+    log.debug("Extra Roles: $extraRoles", { extraRoles });
     for (let role of extraRoles) {
       config.bot.master === "discord"
         ? removeTeamspeakRole(teamspeakId, role)
         : removeDiscordRole(member, role);
     }
   } catch (ex) {
-    console.log("Error synchronising user: " + member.username, ex);
+    log.error("Error synchronising user: $discordName $exception", {
+      discordName: member.username,
+      exception: ex,
+    });
   }
 }
 
