@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@keyv/sqlite": "^3.6.4",
+    "@keyv/sqlite": "^3.6.7",
     "atob": "^2.1.2",
     "btoa": "^1.2.1",
     "config.json": "0.0.4",
