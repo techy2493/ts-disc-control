@@ -9,14 +9,14 @@ https://discord.gg/SDHjZt9wYt
 
 Join us in the TS-Disc-Control Discord to recieve notifications of updates, get help, and partake in discussions about features being implemented and to help choose the new features for each release!
 
+## Current Status
+As of 02/19/23 the project is active and taking change requets. Join us on discord at the link below or put in an issue. We don't guarantee a response time but if you let us know how negatively something is impacting your community we will do our best to make the top problems a priority.
+
+Readme is in flux, working on figuring out a new documentation strategy if you have specific requests for documentation please join us on Discord and provide your thoughts or provide feedback on #20
+
 ## Hosting
 
-If enough interest is expressed I will consider making this a hosted bot for a monthly subscription instead of requiring you to host it yourself; though we will always support hosting the bot yourself  for free. I know that the knowledge requirements and platform requirements are a barrier to entry for some, however until there is enough interest I cannot justify the cost to host it at what I would feel comfortable charging for a subscription. I am willing to help setup everything you need to host it for a one time fee however, so reach out to me on discord to discuss this option if it feels like a good fit.
-
-## Current Status
-As of 01/24/23 the project is active and taking change requets. Join us on discord at the link below or put in an issue. We don't guarantee a response time but if you let us know how negatively something is impacting your community we will do our best to make the top problems a priority.
-
-DEMO links updated, join the Demo server https://discord.gg/SDHjZt9wYt to reach out to me directly, or feel free to post an issue and I will respond when I can.
+I am currently looking into the requirements for making this a hosted bot and providing all requirements for OAuth to work. If you are interested in this please reach out on Discord to provide your input.
 
 ## How & Is it Safe?
 
