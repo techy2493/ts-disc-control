@@ -1,10 +1,10 @@
-const web = require("./src/express");
-const ts = require("./src/teamspeak");
-const db = require("./src/database");
-const discord = require("./src/discord");
-const _ = require("lodash");
-const teamspeakClientConnected = require("./src/actions/teamspeakClientConnected");
-const synchroniseUser = require("./src/actions/synchronizeUser");
+import web from "./src/express.js";
+import ts from "./src/teamspeak.js";
+import db from "./src/database.js";
+import discord from "./src/discord.js";
+import _ from "lodash";
+import teamspeakClientConnected from "./src/actions/teamspeakClientConnected.js";
+import synchroniseUser from "./src/actions/synchronizeUser.js";
 
 // Initialize Connections to Servers
 async function initialize() {

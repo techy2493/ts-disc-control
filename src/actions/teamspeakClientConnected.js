@@ -1,11 +1,11 @@
-const teamspeak = require("../teamspeak");
-const btoa = require("btoa");
-const config = require("../config");
-const db = require("../database");
-const synchronizeUser = require("./synchronizeUser");
-const discord = require("../discord");
+import teamspeak from "../teamspeak.js";
+import btoa from "btoa";
+import config from "../config.js";
+import db from "../database.js";
+import synchronizeUser from "./synchronizeUser.js";
+import discord from "../discord.js";
 
-module.exports = async function (event) {
+export default async function (event) {
   return new Promise(async (resolve, reject) => {
     var tsid = event.client.propcache.clientUniqueIdentifier;
     var discordID = await db.getDiscodIDByTeamspeakID(tsid);
@@ -48,4 +48,4 @@ module.exports = async function (event) {
     }
     resolve();
   });
-};
+}

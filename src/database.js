@@ -1,5 +1,5 @@
-const config = require("./config");
-const sqlite3 = require("sqlite3").verbose();
+import config from "./config.js";
+import sqlite3 from "sqlite3";
 
 class Database {
   constructor() {
@@ -250,4 +250,4 @@ class Database {
   }
 }
 
-module.exports = new Database();
+export default new Database();

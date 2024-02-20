@@ -1,7 +1,7 @@
-const ts = require("../teamspeak");
-const db = require("../database");
-const _ = require("lodash");
-const config = require("../config");
+import ts from "../teamspeak.js";
+import db from "../database.js";
+import _ from "lodash";
+import config from "../config.js";
 
 // TODO: MOVE TS CLIENT CODE TO TEAMSPEAK.JS
 async function getTeamspeakRoles(cldbID, roles) {
@@ -108,11 +108,11 @@ async function sync(tsID, member) {
       syncedRoles
     );
 
-    missingRoles = await getMissingRoles(
+    var missingRoles = await getMissingRoles(
       RolesUserHasDiscord,
       RolesUserHasTeamspeak
     );
-    extraRoles = await getExtraRoles(
+    var extraRoles = await getExtraRoles(
       RolesUserHasDiscord,
       RolesUserHasTeamspeak
     );
@@ -138,9 +138,9 @@ async function sync(tsID, member) {
   }
 }
 
-module.exports = async function synchroniseUser(member) {
-  tsIDs = await db.getTeamspeakIDByDiscordId(member.user.id);
+export default async function synchroniseUser(member) {
+  var tsIDs = await db.getTeamspeakIDByDiscordId(member.user.id);
   for (const tsID of tsIDs) {
     await sync(tsID, member);
   }
-};
+}

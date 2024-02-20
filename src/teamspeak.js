@@ -1,9 +1,5 @@
-const {
-  TeamSpeak,
-  QueryProtocol,
-  TextMessageTargetMode,
-} = require("ts3-nodejs-library");
-const config = require("./config");
+import { TeamSpeak, TextMessageTargetMode } from "ts3-nodejs-library";
+import config from "./config.js";
 /*
 TODO: FIX THIS ON SERVER EDIT
 
@@ -82,4 +78,4 @@ class TS {
   }
 }
 
-module.exports = new TS();
+export default new TS();

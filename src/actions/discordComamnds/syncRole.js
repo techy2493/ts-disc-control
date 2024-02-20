@@ -1,6 +1,6 @@
-const db = require("../../database");
-const ts = require("../../teamspeak");
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import db from "../../database.js";
+import ts from "../../teamspeak.js";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
 class SyncRoleCommand {
   constructor() {
@@ -54,4 +54,4 @@ class SyncRoleCommand {
   }
 }
 
-module.exports = new SyncRoleCommand();
+export default new SyncRoleCommand();

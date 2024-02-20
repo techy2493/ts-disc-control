@@ -1,7 +1,7 @@
-const db = require("../../database");
-const synchroniseUser = require("../synchronizeUser");
-const ts = require("../../teamspeak");
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import db from "../../database.js";
+import synchroniseUser from "../synchronizeUser.js";
+import ts from "../../teamspeak.js";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
 class RegisterCommand {
   constructor() {
@@ -67,4 +67,4 @@ class RegisterCommand {
   //     }
 }
 
-module.exports = new RegisterCommand();
+export default new RegisterCommand();

@@ -1,7 +1,7 @@
-const db = require("../../database");
-const synchroniseUser = require("../synchronizeUser");
-const ts = require("../../teamspeak");
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+import db from "../../database.js";
+import synchroniseUser from "../synchronizeUser.js";
+import ts from "../../teamspeak.js";
+import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 
 class SyncCommand {
   constructor() {
@@ -57,4 +57,4 @@ class SyncCommand {
   }
 }
 
-module.exports = new SyncCommand();
+export default new SyncCommand();

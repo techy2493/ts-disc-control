@@ -1,13 +1,13 @@
-const config = require("./config");
-const {
+import config from "./config.js";
+import {
   Client,
   Collection,
   Events,
   GatewayIntentBits,
   REST,
   Routes,
-} = require("discord.js");
-const commands = require("./actions/discordComamnds");
+} from "discord.js";
+import commands from "./actions/discordComamnds/index.js";
 
 class Discord {
   constructor() {
@@ -118,4 +118,4 @@ class Discord {
   }
 }
 
-module.exports = new Discord();
+export default new Discord();

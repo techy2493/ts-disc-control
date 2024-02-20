@@ -1,7 +1,7 @@
-const db = require("../../database");
-const synchroniseUser = require("../synchronizeUser");
-const ts = require("../../teamspeak");
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import db from "../../database.js";
+import synchroniseUser from "../synchronizeUser.js";
+import ts from "../../teamspeak.js";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
 class TSIDCommand {
   constructor() {
@@ -75,4 +75,4 @@ class TSIDCommand {
   //     }
 }
 
-module.exports = new TSIDCommand();
+export default new TSIDCommand();

@@ -1,5 +1,5 @@
-const db = require("../../database");
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+import db from "../../database.js";
+import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 
 class UnSyncCommand {
   constructor() {
@@ -37,4 +37,4 @@ class UnSyncCommand {
   }
 }
 
-module.exports = new UnSyncCommand();
+export default new UnSyncCommand();
