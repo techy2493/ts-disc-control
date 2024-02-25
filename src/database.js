@@ -1,6 +1,6 @@
 import config from "./config.js";
 import sqlite3 from "sqlite3";
-
+import log from "./log.js";
 class Database {
   constructor() {
     this.db = new sqlite3.Database(
@@ -148,7 +148,7 @@ class Database {
                        VALUES ('${discordID}','${tsID}')`,
         (err) => {
           if (err) {
-            console.log(err);
+            log.error(err);
             reject(err);
           }
           resolve();

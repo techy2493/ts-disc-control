@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "@keyv/sqlite": "^3.6.7",
+    "@monaco-editor/react": "^4.6.0",
+    "antd": "^5.14.2",
     "atob": "^2.1.2",
     "btoa": "^1.2.1",
     "cookie-parser": "^1.4.6",

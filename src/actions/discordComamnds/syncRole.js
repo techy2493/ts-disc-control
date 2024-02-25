@@ -35,7 +35,6 @@ class SyncRoleCommand {
     }
 
     let synced = await db.getSynchronizedRoles();
-    console.log(synced);
     if (synced === undefined) {
       synced = [];
     }
@@ -44,7 +43,6 @@ class SyncRoleCommand {
     await db.addSynchronizedRoles(role.name, tsGroup);
 
     synced = await db.getSynchronizedRoles();
-    console.log(synced);
     let syncedString = "Syncing: ";
     synced.forEach((r, index) => {
       syncedString += r.discord + " -> " + r.teamspeak;

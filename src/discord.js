@@ -8,7 +8,7 @@ import {
   Routes,
 } from "discord.js";
 import commands from "./actions/discordComamnds/index.js";
-
+import log from "./log.js";
 class Discord {
   constructor() {
     this.client = new Client({
@@ -25,8 +25,9 @@ class Discord {
       if ("data" in command && "execute" in command) {
         this.client.commands.set(command.data.name, command);
       } else {
-        console.log(
-          `[WARNING] The command ${command} is missing a required "data" or "execute" property.`
+        log.debug(
+          `[WARNING] The command $command is missing a required "data" or "execute" property.`,
+          { command: command }
         );
       }
     }
@@ -37,7 +38,7 @@ class Discord {
       this.client.login(config.discord.token);
       this.client.on("ready", () => {
         this.client.intents;
-        console.log("Discord Bot Connected");
+        log.system("Discord Bot Connected");
         this.regsiterCommands();
         resolve();
       });
@@ -58,29 +59,29 @@ class Discord {
         }
       });
 
-      // this.client.on(Events.Debug, (message) => {
-      //   console.log(message);
-      // });
+      this.client.on(Events.Debug, (message) => {
+        log.debug(message);
+      });
 
-      // this.client.on(Events.Error, (message) => {
-      //   console.log(message);
-      // });
+      this.client.on(Events.Error, (message) => {
+        log.error(message);
+      });
 
-      // this.client.on(Events.Warn, (message) => {
-      //   console.log(message);
-      // });
+      this.client.on(Events.Warn, (message) => {
+        log.debug(message);
+      });
 
-      // this.client.on(Events.GuildUnavailable, (message) => {
-      //   console.log(message);
-      // });
+      this.client.on(Events.GuildUnavailable, (message) => {
+        log.error(message);
+      });
 
-      // this.client.on(Events.GuildRoleUpdate, (message) => {
-      //   console.log(message);
-      // });
+      this.client.on(Events.GuildRoleUpdate, (message) => {
+        log.verbose(message);
+      });
 
-      // this.client.on(Events.Raw, (message) => {
-      //   console.log(message);
-      // });
+      this.client.on(Events.Raw, (message) => {
+        log.verbose(message);
+      });
     });
   }
 
@@ -103,7 +104,7 @@ class Discord {
       { body: devJsonCommands }
     );
 
-    console.log(
+    log.system(
       `Successfully reloaded ${data.length} dev application (/) commands.`
     );
 
@@ -112,7 +113,7 @@ class Discord {
       { body: jsonCommands }
     );
 
-    console.log(
+    log.debug(
       `Successfully reloaded ${data2.length} public application (/) commands.`
     );
   }

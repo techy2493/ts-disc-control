@@ -2,6 +2,7 @@ import db from "../../database.js";
 import synchroniseUser from "../synchronizeUser.js";
 import ts from "../../teamspeak.js";
 import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
+import log from "../../log.js";
 
 class SyncCommand {
   constructor() {
@@ -38,7 +39,10 @@ class SyncCommand {
     try {
       client = await ts.client.clientGetDbidFromUid(tsid);
     } catch (ex) {
-      console.log(ex);
+      log.error("Error executing sync command $exception", {
+        discordName: member.username,
+        exception: ex,
+      });
     }
 
     if (client) {
