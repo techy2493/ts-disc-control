@@ -27,7 +27,7 @@
     "node-fetch": "^3.3.2",
     "node-t": "^0.1.0",
     "node-ts": "^6.0.1",
-    "openid-client": "^5.3.1",
+    "openid-client": "^5.6.4",
     "path": "^0.12.7",
     "querystring": "^0.2.1",
     "source-server-query": "^3.0.3",
