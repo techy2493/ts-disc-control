@@ -126,7 +126,7 @@ Create a serverquery account for your bot to monitor teamspeak, send messages to
 
 See the configuration section of the wiki for information on configuring the bot, an example config file and descriptions of each configuration item and what it is used for.
 
-```
 ### Running the bot
 Once the config file is filled out, run the bot by executing index.js with node.
 To make it run continually you may want to use PM2, see: https://discordjs.guide/improving-dev-environment/pm2.html#installation
+The file you should run is index.js found at the root of the bot's files (next to the config you should create)
